@@ -1,4 +1,4 @@
-package com.jacqueline294.lab_2.config.Bcryp
+package com.jacqueline294.lab_2.config.bcryp
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,5 +15,3 @@ class BcryptPasswordEncoderConfig {
     }
 }
 
-data class RegisterRequest(val username: String, val password: String)
-data class LoginRequest(val username: String, val password: String)

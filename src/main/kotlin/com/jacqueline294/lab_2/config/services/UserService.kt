@@ -4,7 +4,9 @@ import com.jacqueline294.lab_2.user.model.CustomUser
 import com.jacqueline294.lab_2.user.repository.CustomUserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Service
 
+@Service
 class UserService(@Autowired private val userRepository: CustomUserRepository, private val passwordEncoder: PasswordEncoder) {
 
     fun registerUser(username: String, password: String): CustomUser {
@@ -26,7 +28,6 @@ class UserService(@Autowired private val userRepository: CustomUserRepository, p
             false
         }
     }
+
     fun findAllUsers(): List<CustomUser> = userRepository.findAll()
 }
-
-
