@@ -39,8 +39,6 @@ class CustomUserController(@Autowired private val userService: UserService) {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
-    @GetMapping()
-    fun findAllUsers(): ResponseEntity<List<CustomUser>> = ResponseEntity.ok(userService.findAllUsers())
 }
 
 
