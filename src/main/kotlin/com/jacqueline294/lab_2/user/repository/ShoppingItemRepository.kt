@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ShoppingItemRepository : JpaRepository<ShoppingItem, Long> {
     fun findByUserId(userId: Long): List<ShoppingItem>
+    abstract fun findByIdAndUserId(id: Long, userId: Long): Any
 }

@@ -1,47 +1,53 @@
 package com.jacqueline294.lab_2.user.controller
 
-
-import com.jacqueline294.lab_2.config.requests.LoginRequest
-import com.jacqueline294.lab_2.config.requests.RegisterRequest
-import com.jacqueline294.lab_2.config.services.UserService
 import com.jacqueline294.lab_2.user.model.CustomUser
+import com.jacqueline294.lab_2.user.repository.CustomUserRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 
 
 
 @RestController
-@RequestMapping("/api/users")
-class CustomUserController(@Autowired private val userService: UserService) {
+@RequestMapping("/auth")
+class CustomUserController @Autowired constructor(
+    val customUserRepository: CustomUserRepository,
+    val passwordEncoder: PasswordEncoder
+) {
 
-    @PostMapping("/register")
-    fun registerUser(@RequestBody request: RegisterRequest): ResponseEntity<CustomUser> {
-        val user = userService.registerUser(request.username, request.password)
-        return ResponseEntity.status(HttpStatus.CREATED).body(user)
+    @GetMapping("/password")
+    fun getBcryptPassword(): String {
+        val testPassword = "123"
+        return passwordEncoder.encode(testPassword)
     }
 
-    @PostMapping("/login")
-    fun loginUser(@RequestBody request: LoginRequest): ResponseEntity<CustomUser> {
-        val user = userService.authenticateUser(request.username, request.password)
-            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
-        return ResponseEntity.ok(user)
+    @GetMapping
+    fun getAllUsers(): ResponseEntity<List<CustomUser>> {
+        val users: List<CustomUser> = customUserRepository.findAll()
+        return ResponseEntity.ok(users)
     }
 
+    @PostMapping
+    fun saveUser(
+        @Validated @RequestBody newUser: CustomUser
+    ): ResponseEntity<String> {
 
-    @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id: Long): ResponseEntity<Void> {
-        return if (userService.deleteUser(id)) {
-            ResponseEntity(HttpStatus.NO_CONTENT)
-        } else {
-            ResponseEntity(HttpStatus.NOT_FOUND)
-        }
+
+        val bcryptUser = CustomUser(
+            newUser.username,
+            passwordEncoder.encode(newUser.password)
+        )
+
+
+        customUserRepository.save(bcryptUser)
+
+        return ResponseEntity.status(201).body("User was successfully created")
     }
+
 }
-
-
 
 
 
