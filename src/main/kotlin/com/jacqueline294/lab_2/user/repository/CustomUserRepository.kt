@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface CustomUserRepository: JpaRepository<CustomUser, Long> {
     fun findByUsername(username: String): CustomUser?
-    abstract fun existsByUsername(username: String): Boolean
+    fun existsByUsername(username: String): Boolean
 }
