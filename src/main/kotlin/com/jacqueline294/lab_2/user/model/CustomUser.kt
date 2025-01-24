@@ -7,17 +7,15 @@ import jakarta.validation.constraints.Size
 
 @Entity
 class CustomUser(
-
     @field:NotEmpty
     @field:Size(min = 2, max = 16)
-    val username: String,
+    var username: String,
 
     @field:NotEmpty
     @field:Size(min = 7, max = 73)
-    val password: String,
+    var password: String,
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Long? = null
-) {
-}
+    var id: Long? = null
+)
