@@ -33,9 +33,13 @@ class ShoppingListController(private val shoppingItemRepository: ShoppingItemRep
         val existingItem = shoppingItemRepository.findById(id).orElseThrow {
             IllegalArgumentException("Item not found with ID: $id")
         }
-        existingItem.itemName = itemDto.itemName
-        existingItem.quantity = itemDto.quantity
-        shoppingItemRepository.save(existingItem)
+
+        val updatedItem = existingItem.copy(
+            itemName = itemDto.itemName,
+            quantity = itemDto.quantity
+        )
+
+        shoppingItemRepository.save(updatedItem)
         return ResponseEntity.ok("Item updated successfully")
     }
 
